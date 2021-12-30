@@ -37,28 +37,7 @@ export default {
     showAddTask: false
     }
   },
-  created(){
-    this.tasks = [
-      {
-        id: 1,
-        text: 'Doctors Appointment',
-        day: 'March 1st at 2:30pm',
-        reminder: true,
-      },
-      {
-        id:2,
-        text: 'saasasas',
-        day: 'March 2nd at 2:30pm',
-        reminder: true,
-      },
-      {
-        id:3,
-        text: 'eweqeweqwe',
-        day: 'March 3rd at 2:30pm',
-        reminder: false,
-      }
-    ]
-  },
+   
   methods:{
     addTask(task){
       this.tasks = [...this.tasks, task]
@@ -73,11 +52,44 @@ export default {
       // console.log(id)
       this.tasks = this.tasks.map((task) => task.id === id ? {...task, reminder : ! task.reminder } : task)
     },
+    async fetchTasks(){
+      const res = await fetch('http://localhost:3000/tasks')
+      const data = await res.json()
+      return data
+    },
+      async fetchTask(id){
+      const res = await fetch(`http://localhost:3000/tasks/${id}`)
+      const data = await res.json()
+      return data
+    },
     toggleAddTask(){
       this.showAddTask = !this.showAddTask
     }
     
-  }
+  },
+  async created(){
+    this.tasks = await this.fetchTasks()
+    // this.tasks = [
+    //   {
+    //     id: 1,
+    //     text: 'Doctors Appointment',
+    //     day: 'March 1st at 2:30pm',
+    //     reminder: true,
+    //   },
+    //   {
+    //     id:2,
+    //     text: 'saasasas',
+    //     day: 'March 2nd at 2:30pm',
+    //     reminder: true,
+    //   },
+    //   {
+    //     id:3,
+    //     text: 'eweqeweqwe',
+    //     day: 'March 3rd at 2:30pm',
+    //     reminder: false,
+    //   }
+    // ]
+  },
 }
 </script>
 
